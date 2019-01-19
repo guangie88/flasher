@@ -1,4 +1,4 @@
-# flash
+# Flasher
 
 ## Project setup
 ```
