@@ -1,0 +1,46 @@
+language: node_js
+
+env:
+  global:
+  - REPO_NAME=flasher
+
+matrix:
+  include:
+  - language: bash
+    services: docker
+    env:
+    - DOCKER=true
+  - node_js: '9'
+    sudo: false
+  - node_js: '10'
+    sudo: false
+  - node_js: '11'
+    sudo: false
+
+before_script:
+- docker login -u="${DOCKER_USERNAME}" -p="${DOCKER_PASSWORD}"
+
+script:
+- |-
+  if [ "${DOCKER}" = "true" ]; then
+    docker build . -t ${DOCKER_USERNAME}/${REPO_NAME}
+  else
+    yarn && yarn build
+  fi
+
+after_success:
+- |-
+  if [ "${DOCKER}" = "true" ] && [ "${TRAVIS_PULL_REQUEST} = "false" ]; then
+    docker push ${DOCKER_USERNAME}/${REPO_NAME}
+
+    if [ -n "${TRAVIS_TAG}" ]; then
+      DOCKER_TAGGED_IMAGE=${DOCKER_USERNAME}/${REPO_NAME}:${TRAVIS_TAG}
+      docker tag ${DOCKER_USERNAME}/${REPO_NAME} ${DOCKER_TAGGED_IMAGE}
+      docker push ${DOCKER_TAGGED_IMAGE}
+    fi
+  fi
+
+branches:
+  only:
+  - master
+  - /^v\d+\.\d+\.\d+(-\S*)?$/

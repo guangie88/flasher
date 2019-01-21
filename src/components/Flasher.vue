@@ -1,5 +1,10 @@
 <template>
-  <div class="flasher" :style="bgc"></div>
+  <div
+    :class="{ flasher: true, fullscreen: isFullscreen }"
+    v-on:click="toggleFullscreen"
+    :style="bgc">
+    <div>{{ msg }}</div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -10,11 +15,15 @@ export default class Flasher extends Vue {
   @Prop()
   private colors!: string[];
 
-  @Prop({ default: 1000 })
+  @Prop({ default: 250 })
   private interval!: number;
+
+  @Prop({ default: '' })
+  private msg!: string;
 
   private index: number = 0;
   private intervalId: number = -1;
+  private isFullscreen: boolean = false;
 
   private bgc: { backgroundColor: string } = {
     backgroundColor: this.colors[0],
@@ -27,6 +36,10 @@ export default class Flasher extends Vue {
   @Watch('interval')
   private watchInterval(newInterval: number, oldInterval: number) {
     this.setNewInterval(newInterval);
+  }
+
+  private toggleFullscreen() {
+    this.isFullscreen = !this.isFullscreen;
   }
 
   private setNewInterval(newInterval: number) {
@@ -44,7 +57,17 @@ export default class Flasher extends Vue {
 
 <style scoped>
 .flasher {
-  width: 200px;
-  height: 200px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.fullscreen {
+  top: 0;
+  left: 0;
+  position: fixed;
+  z-index: 99999;
 }
 </style>

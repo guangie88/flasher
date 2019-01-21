@@ -1,7 +1,8 @@
 <template>
-  <div id="app">
+  <b-container id="app">
+    <h1>Color Flasher</h1>
     <FlashSet />
-  </div>
+  </b-container>
 </template>
 
 <script lang="ts">
@@ -22,6 +23,6 @@ export default class App extends Vue {}
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  padding-top: 20px;
 }
 </style>
