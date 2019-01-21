@@ -1,9 +1,9 @@
 <template>
   <div
     :class="{ flasher: true, fullscreen: isFullscreen }"
-    v-on:click="toggleFullscreen"
+    v-on:dblclick="toggleFullscreen"
     :style="bgc">
-    <div>{{ msg }}</div>
+    <div :class="{ unselectable: true, invisible: disableMsg }">{{ msg }}</div>
   </div>
 </template>
 
@@ -15,11 +15,14 @@ export default class Flasher extends Vue {
   @Prop()
   private colors!: string[];
 
-  @Prop({ default: 250 })
+  @Prop({ default: 200 })
   private interval!: number;
 
   @Prop({ default: '' })
   private msg!: string;
+
+  @Prop({ default: false })
+  private disableMsg!: boolean;
 
   private index: number = 0;
   private intervalId: number = -1;
@@ -69,5 +72,17 @@ export default class Flasher extends Vue {
   left: 0;
   position: fixed;
   z-index: 99999;
+}
+.unselectable {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select:none;
+  user-select: none;
+}
+.invisible {
+  visibility: hidden;
 }
 </style>

@@ -1,7 +1,8 @@
 <template>
   <b-container id="app">
-    <h1>Color Flasher</h1>
-    <FlashSet />
+    <b-card title="Color Flasher">
+      <FlashSet />
+    </b-card>
   </b-container>
 </template>
 

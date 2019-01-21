@@ -1,22 +1,22 @@
 <template>
-  <b-container class="enclosed">
+  <b-container>
     <b-row>
-      <b-col sm="8">
-        <Flasher :colors="colors" :interval="interval" msg="Click to toggle fullscreen" />
+      <b-col sm="6" md="7">
+        <Flasher
+          :colors="colors"
+          :interval="interval"
+          :disableMsg="disableMsg"
+          msg="Double click to toggle fullscreen"
+        />
       </b-col>
-      <b-col sm="4">
-        <b-row>
-          <div>
-            <label style="" for="interval">Interval (ms):</label>
-            <input id="interval" :value="interval" @input="updateInterval($event)" />
-          </div>
-        </b-row>
-        <b-row>
-          <div>
-            <label style="margin-right: 10px;" for="colors">Color(s):</label>
-            <input id="colors" :value="colorsStr" @input="updateColors($event)" />
-          </div>
-        </b-row>
+      <b-col sm="6" md="5">
+        <b-form-group horizontal label-class="text-sm-right" label-size="sm" label="Interval (ms)" label-for="interval">
+          <b-form-input id="interval" size="sm" v-model="interval" />
+        </b-form-group>
+        <b-form-group horizontal label-class="text-sm-right" label-size="sm" label="Color(s)" label-for="colors">
+          <b-form-input id="colors" size="sm" v-model="colorsStr" />
+        </b-form-group>
+        <b-form-checkbox id="disableMsg" size="sm" v-model="disableMsg">Disable text</b-form-checkbox>
       </b-col>
     </b-row>
   </b-container>
@@ -32,19 +32,14 @@ import Flasher from './Flasher.vue';
   },
 })
 export default class FlashSet extends Vue {
-  @Prop({ default: 250 })
+  @Prop({ default: 200 })
   private interval!: number;
 
   @Prop({ default: 'red, white'})
   private colorsStr!: string;
 
-  private updateInterval($event: any) {
-    this.interval = $event.target.value;
-  }
-
-  private updateColors($event: any) {
-    this.colorsStr = $event.target.value;
-  }
+  @Prop({ default: false })
+  private disableMsg!: boolean;
 
   private get colors() {
     return this.colorsStr.split(',');
@@ -53,12 +48,4 @@ export default class FlashSet extends Vue {
 </script>
 
 <style>
-label {
-  margin-right: 10px;
-}
-.enclosed {
-  border: 1px solid black;
-  padding: 15px;
-  margin: 10px;
-}
 </style>
