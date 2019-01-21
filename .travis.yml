@@ -23,20 +23,20 @@ before_script:
 script:
 - |-
   if [ "${DOCKER}" = "true" ]; then
-    docker build . -t ${DOCKER_USERNAME}/${REPO_NAME}
+    docker build . -t "${DOCKER_USERNAME}/${REPO_NAME}"
   else
     yarn && yarn build
   fi
 
-after_success:
+after_script:
 - |-
   if [ "${DOCKER}" = "true" ] && [ "${TRAVIS_PULL_REQUEST} = "false" ]; then
-    docker push ${DOCKER_USERNAME}/${REPO_NAME}
+    docker push "${DOCKER_USERNAME}/${REPO_NAME}"
 
     if [ -n "${TRAVIS_TAG}" ]; then
-      DOCKER_TAGGED_IMAGE=${DOCKER_USERNAME}/${REPO_NAME}:${TRAVIS_TAG}
-      docker tag ${DOCKER_USERNAME}/${REPO_NAME} ${DOCKER_TAGGED_IMAGE}
-      docker push ${DOCKER_TAGGED_IMAGE}
+      DOCKER_TAGGED_IMAGE="${DOCKER_USERNAME}/${REPO_NAME}:${TRAVIS_TAG}"
+      docker tag "${DOCKER_USERNAME}/${REPO_NAME}" "${DOCKER_TAGGED_IMAGE}"
+      docker push "${DOCKER_TAGGED_IMAGE}"
     fi
   fi
 
