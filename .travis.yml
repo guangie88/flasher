@@ -30,7 +30,7 @@ script:
 
 after_script:
 - |-
-  if [ "${DOCKER}" = "true" ] && [ "${TRAVIS_PULL_REQUEST} = "false" ]; then
+  if [ "${DOCKER}" = "true" ] && [ "${TRAVIS_PULL_REQUEST}" = "false" ]; then
     docker push "${DOCKER_USERNAME}/${REPO_NAME}"
 
     if [ -n "${TRAVIS_TAG}" ]; then
