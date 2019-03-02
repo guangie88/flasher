@@ -11,7 +11,8 @@
       </b-col>
       <b-col sm="6" md="5">
         <b-form-group horizontal label-class="text-sm-right" label-size="sm" label="Interval (ms)" label-for="interval">
-          <b-form-input id="interval" size="sm" v-model="interval" />
+          <b-form-input id="interval" size="sm" type="number" v-model="interval" />
+          <b-form-text>{{ bpm }} BPM</b-form-text>
         </b-form-group>
         <b-form-group horizontal label-class="text-sm-right" label-size="sm" label="Color(s)" label-for="colors">
           <b-form-input id="colors" size="sm" v-model="colorsStr" />
@@ -43,6 +44,10 @@ export default class FlashSet extends Vue {
 
   private get colors() {
     return this.colorsStr.split(',');
+  }
+
+  private get bpm() {
+    return 1.0 / this.interval * 60000 / this.colors.length;
   }
 }
 </script>

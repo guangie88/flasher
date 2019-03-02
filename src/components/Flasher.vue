@@ -8,6 +8,8 @@
 </template>
 
 <script lang="ts">
+import NoSleep from '../tools/nosleep';
+
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 
 @Component
@@ -27,6 +29,7 @@ export default class Flasher extends Vue {
   private index: number = 0;
   private intervalId: number = -1;
   private isFullscreen: boolean = false;
+  private ns: NoSleep = new NoSleep();
 
   private bgc: { backgroundColor: string } = {
     backgroundColor: this.colors[0],
@@ -43,6 +46,13 @@ export default class Flasher extends Vue {
 
   private toggleFullscreen() {
     this.isFullscreen = !this.isFullscreen;
+
+    // Disable sleeping
+    if (this.isFullscreen) {
+      this.ns.enable();
+    } else {
+      this.ns.disable();
+    }
   }
 
   private setNewInterval(newInterval: number) {
@@ -60,6 +70,7 @@ export default class Flasher extends Vue {
 
 <style scoped>
 .flasher {
+  min-height: 60px;
   width: 100%;
   height: 100%;
   display: flex;
